@@ -4,7 +4,7 @@ pub struct Vector([f64; 3]);
 
 impl Vector {
     /// Creates a new `Vector`.
-    pub fn new(inner: [f64; 3]) -> Vector {
-        Vector(inner)
+    pub fn new(x: f64, y: f64, z: f64) -> Vector {
+        Vector([x, y, z])
     }
 }
