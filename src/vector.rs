@@ -1,4 +1,5 @@
 /// A three dimensional vector.
+#[derive(Clone, Copy)]
 pub struct Vector([f64; 3]);
 
 impl Vector {

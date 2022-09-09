@@ -1,4 +1,5 @@
 /// A three dimensional point.
+#[derive(Clone, Copy)]
 pub struct Point([f64; 3]);
 
 impl Point {
