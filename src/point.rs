@@ -1,4 +1,4 @@
-/// A three dimensional point
+/// A three dimensional point.
 pub struct Point([f64; 3]);
 
 impl Point {
