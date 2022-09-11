@@ -1,15 +1,28 @@
-use crate::{Point, Ray};
+use image::Rgb;
+
+use crate::{Point, Ray, Vector};
 
 /// A three dimensional sphere.
+#[derive(Clone, Copy)]
 pub struct Sphere {
     center: Point,
     radius: f64,
+    color: Rgb<f32>,
 }
 
 impl Sphere {
     /// Creates a new `Sphere`.
-    pub fn new(center: Point, radius: f64) -> Sphere {
-        Sphere { center, radius }
+    pub fn new(center: Point, radius: f64, color: Rgb<f32>) -> Sphere {
+        Sphere {
+            center,
+            radius,
+            color,
+        }
+    }
+
+    /// Returns the `Sphere`'s color.
+    pub fn color(self) -> Rgb<f32> {
+        self.color
     }
 
     /// Casts a `Ray` at `self`.
@@ -44,6 +57,12 @@ impl Sphere {
             false => None,
         }
     }
+
+    /// Returns a normal `Vector`.
+    /// Assumes the `Point` is on the surface of the `Sphere`.
+    pub fn normal(self, point: Point) -> Vector {
+        point - self.center
+    }
 }
 
 #[cfg(test)]
@@ -52,38 +71,42 @@ mod tests {
 
     use super::*;
 
+    fn unit_sphere() -> Sphere {
+        Sphere::new(Point::new([0.0; 3]), 1.0, Rgb([0.0; 3]))
+    }
+
     #[test]
     fn hit_outside() {
         let ray = Ray::new(Point::new([-2.0, 0.0, 0.0]), Vector::new([1.0, 0.0, 0.0]));
-        let sphere = Sphere::new(Point::new([0.0; 3]), 1.0);
+        let sphere = unit_sphere();
         assert_eq!(sphere.cast(ray), Some(1.0));
     }
 
     #[test]
     fn hit_inside() {
         let ray = Ray::new(Point::new([0.0; 3]), Vector::new([1.0, 0.0, 0.0]));
-        let sphere = Sphere::new(Point::new([0.0; 3]), 1.0);
+        let sphere = unit_sphere();
         assert_eq!(sphere.cast(ray), Some(1.0));
     }
 
     #[test]
     fn skim_surface() {
         let ray = Ray::new(Point::new([-2.0, 1.0, 0.0]), Vector::new([1.0, 0.0, 0.0]));
-        let sphere = Sphere::new(Point::new([0.0; 3]), 1.0);
+        let sphere = unit_sphere();
         assert_eq!(sphere.cast(ray), Some(2.0));
     }
 
     #[test]
     fn sphere_behind_ray() {
         let ray = Ray::new(Point::new([1.0, 0.0, 0.0]), Vector::new([1.0, 0.0, 0.0]));
-        let sphere = Sphere::new(Point::new([0.0; 3]), 1.0);
+        let sphere = unit_sphere();
         assert_eq!(sphere.cast(ray), None);
     }
 
     #[test]
     fn miss() {
         let ray = Ray::new(Point::new([-2.0, 0.0, 0.0]), Vector::new([-1.0, 0.0, 0.0]));
-        let sphere = Sphere::new(Point::new([0.0; 3]), 1.0);
+        let sphere = unit_sphere();
         assert_eq!(sphere.cast(ray), None);
     }
 }

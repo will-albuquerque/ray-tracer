@@ -1,4 +1,4 @@
-use std::ops::Mul;
+use std::ops::{Add, Div, Mul};
 
 /// A three dimensional vector.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -19,6 +19,24 @@ impl Vector {
     pub fn dot(self, other: Vector) -> f64 {
         self.0.zip(other.0).map(|(x, y)| x * y).iter().sum()
     }
+
+    /// Calculates the Euclidean norm.
+    pub fn norm(self) -> f64 {
+        self.0.iter().map(|x| x.powi(2)).sum()
+    }
+
+    /// Normalises the `Vector`
+    pub fn normalise(self) -> Vector {
+        self / self.norm()
+    }
+}
+
+impl Add for Vector {
+    type Output = Vector;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Vector(self.0.zip(rhs.0).map(|(x, y)| x + y))
+    }
 }
 
 impl Mul<Vector> for f64 {
@@ -26,6 +44,14 @@ impl Mul<Vector> for f64 {
 
     fn mul(self, rhs: Vector) -> Self::Output {
         Vector(rhs.0.map(|x| self * x))
+    }
+}
+
+impl Div<f64> for Vector {
+    type Output = Vector;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Vector(self.0.map(|x| x / rhs))
     }
 }
 

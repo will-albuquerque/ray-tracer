@@ -7,5 +7,6 @@ pub use vector::Vector;
 
 mod point;
 mod ray;
+mod scene;
 mod sphere;
 mod vector;
