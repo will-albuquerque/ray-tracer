@@ -22,11 +22,11 @@ impl Vector {
 
     /// Calculates the Euclidean norm.
     pub fn norm(self) -> f64 {
-        self.0.iter().map(|x| x.powi(2)).sum()
+        self.0.iter().map(|x| x.powi(2)).sum::<f64>().sqrt()
     }
 
-    /// Normalises the `Vector`
-    pub fn normalise(self) -> Vector {
+    /// Normalizes the `Vector`
+    pub fn normalize(self) -> Vector {
         self / self.norm()
     }
 }
@@ -60,7 +60,41 @@ mod tests {
     use super::*;
 
     #[test]
-    fn scale() {
+    fn calculate_dot() {
+        assert_eq!(Vector::new([1.0; 3]).dot(Vector::new([2.0; 3])), 6.0)
+    }
+
+    #[test]
+    fn calculate_norm() {
+        assert_eq!(Vector::new([1.0, 2.0, 2.0]).norm(), 3.0);
+    }
+
+    #[test]
+    fn normalize_vector() {
+        assert_eq!(
+            Vector::new([1.0, 2.0, 2.0]).normalize(),
+            Vector::new([1.0 / 3.0, 2.0 / 3.0, 2.0 / 3.0])
+        )
+    }
+
+    #[test]
+    fn add_vector() {
+        assert_eq!(
+            Vector([1.0, 2.0, 3.0]) + Vector([1.0, 2.0, 3.0]),
+            Vector([2.0, 4.0, 6.0])
+        );
+    }
+
+    #[test]
+    fn add_identity() {
+        assert_eq!(
+            Vector([1.0, 2.0, 3.0]) + Vector([0.0; 3]),
+            Vector([1.0, 2.0, 3.0])
+        );
+    }
+
+    #[test]
+    fn multiply_by_scalar() {
         assert_eq!(
             2.0 * Vector::new([1.0, 2.0, 3.0]),
             Vector::new([2.0, 4.0, 6.0])
@@ -68,9 +102,25 @@ mod tests {
     }
 
     #[test]
-    fn scale_by_identity() {
+    fn multiply_by_identity() {
         assert_eq!(
             1.0 * Vector::new([1.0, 2.0, 3.0]),
+            Vector::new([1.0, 2.0, 3.0])
+        );
+    }
+
+    #[test]
+    fn divide_by_scalar() {
+        assert_eq!(
+            Vector::new([2.0, 4.0, 6.0]) / 2.0,
+            Vector::new([1.0, 2.0, 3.0])
+        );
+    }
+
+    #[test]
+    fn divide_by_identity() {
+        assert_eq!(
+            Vector::new([1.0, 2.0, 3.0]) / 1.0,
             Vector::new([1.0, 2.0, 3.0])
         );
     }

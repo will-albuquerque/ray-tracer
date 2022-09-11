@@ -45,7 +45,7 @@ impl Scene {
 
                     // Create ray
                     let origin = ray.at(t);
-                    let direction = random + sphere.normal(origin).normalise();
+                    let direction = random + sphere.normal(origin).normalize();
                     ray = Ray::new(origin, direction);
                 }
                 None => return color,

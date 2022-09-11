@@ -39,18 +39,34 @@ mod tests {
     use super::*;
 
     #[test]
-    fn displace() {
+    fn add_vector() {
         assert_eq!(
-            Point::new([0.0, 0.0, 0.0]) + Vector::new([1.0, 2.0, 3.0]),
+            Point::new([0.0; 3]) + Vector::new([1.0, 2.0, 3.0]),
             Point::new([1.0, 2.0, 3.0])
         );
     }
 
     #[test]
-    fn displace_by_identity() {
+    fn add_identity() {
         assert_eq!(
-            Point::new([0.0, 0.0, 0.0]) + Vector::new([0.0, 0.0, 0.0]),
-            Point::new([0.0, 0.0, 0.0])
+            Point::new([0.0; 3]) + Vector::new([0.0; 3]),
+            Point::new([0.0; 3])
+        );
+    }
+
+    #[test]
+    fn sub_point() {
+        assert_eq!(
+            Point::new([0.0; 3]) - Point::new([1.0; 3]),
+            Vector::new([-1.0; 3])
+        );
+    }
+
+    #[test]
+    fn sub_identity() {
+        assert_eq!(
+            Point::new([0.0; 3]) - Point::new([0.0; 3]),
+            Vector::new([0.0; 3])
         );
     }
 }
