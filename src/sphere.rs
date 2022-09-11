@@ -109,4 +109,13 @@ mod tests {
         let sphere = unit_sphere();
         assert_eq!(sphere.cast(ray), None);
     }
+
+    #[test]
+    fn normal() {
+        let sphere = unit_sphere();
+        assert_eq!(
+            sphere.normal(Point::new([1.0, 0.0, 0.0])),
+            Vector::new([1.0, 0.0, 0.0])
+        )
+    }
 }
