@@ -26,11 +26,11 @@ impl Scene {
             let closest = self
                 .spheres
                 .iter()
-                .filter_map(|sphere| sphere.cast(ray).map(|t| (sphere, t)))
-                .min_by(|(_, x), (_, y)| x.total_cmp(y));
+                .filter_map(|sphere| sphere.cast(ray).map(|hit| (sphere, hit)))
+                .min_by(|(_, x), (_, y)| x.t().total_cmp(&y.t()));
 
             match closest {
-                Some((&sphere, t)) => {
+                Some((&sphere, hit)) => {
                     // Update color
                     color.apply2(&sphere.color(), |x, y| x * y);
 
@@ -44,8 +44,8 @@ impl Scene {
                     ]);
 
                     // Create ray
-                    let origin = ray.at(t);
-                    let direction = random + sphere.normal(origin).normalize();
+                    let origin = ray.at(hit.t());
+                    let direction = random + hit.normal().normalize();
                     ray = Ray::new(origin, direction);
                 }
                 None => return color,
