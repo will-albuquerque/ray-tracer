@@ -20,12 +20,19 @@ impl Vector {
         self.0.zip(other.0).map(|(x, y)| x * y).iter().sum()
     }
 
+    /// Calculates the cross product.
+    pub fn cross(self, other: Vector) -> Vector {
+        let [x1, x2, x3] = self.0;
+        let [y1, y2, y3] = other.0;
+        Vector([x2 * y3 - x3 * y2, x3 * y1 - x1 * y3, x1 * y2 - x2 - y1])
+    }
+
     /// Calculates the Euclidean norm.
     pub fn norm(self) -> f64 {
         self.0.iter().map(|x| x.powi(2)).sum::<f64>().sqrt()
     }
 
-    /// Normalizes the `Vector`
+    /// Normalizes the `Vector`.
     pub fn normalize(self) -> Vector {
         self / self.norm()
     }
@@ -62,6 +69,14 @@ mod tests {
     #[test]
     fn calculate_dot() {
         assert_eq!(Vector::new([1.0; 3]).dot(Vector::new([2.0; 3])), 6.0)
+    }
+
+    #[test]
+    fn calculate_cross() {
+        assert_eq!(
+            Vector::new([1.0, 0.0, 0.0]).cross(Vector::new([0.0, 1.0, 0.0])),
+            Vector::new([0.0, 0.0, 1.0])
+        );
     }
 
     #[test]
